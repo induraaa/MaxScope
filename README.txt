@@ -1,48 +1,68 @@
-MaxScope
-========
+# 📟 MaxScope
 
-MaxScope is a simple Python GUI for reading and logging peak measurements from a Tektronix oscilloscope using PyVISA.
+A desktop oscilloscope monitoring application built with **Python**, **tkinter**, and **PyVISA**.  
+MaxScope connects to a Tektronix oscilloscope over TCP/IP, reads waveform data from **Channel 3** and **Channel 4**, displays live peak measurements, and logs measurement history in a clean Windows-style interface.
 
-It detects the peak current on CH4 and records the corresponding voltage on CH3.
+---
 
-Features
---------
-- Live oscilloscope connection over TCP/IP
-- Peak current detection on CH4
-- Corresponding voltage capture on CH3
-- Automatic history logging (no duplicate values)
-- Clear history or selected rows
-- Export measurements to CSV
-- Classic Windows-style GUI
+## Overview
 
-Requirements
-------------
-- Python 3.8+
-- Tektronix oscilloscope with SCPI + TCP/IP
-- NI-VISA or Keysight VISA installed
+MaxScope is designed for real-time monitoring of oscilloscope data in a simple desktop environment. It continuously acquires waveform samples, scales them using the oscilloscope preamble, detects the peak current on **CH4**, and displays the corresponding voltage from **CH3** at the same time index.
 
-Python packages:
-    pip install pyvisa numpy
+The software also records measurement history, allows selective clearing of entries, and supports export to CSV for later analysis.
 
-Usage
------
-1. Update the oscilloscope IP address in the script
-2. Run the program:
-       python maxscope.py
-3. Readings update every second
-4. Use buttons or right-click menu to clear or export data
+---
 
-CSV Export
-----------
-- File: xscope_data.csv
-- Includes measurement number, CH4 current, CH3 voltage, and timestamp
+## ✨ Features
 
-Notes
------
-- CH4 = current, CH3 = voltage
-- Logs only when values change
-- Acquisition stops automatically when closing the app
+- Live connection to a **Tektronix oscilloscope** using **PyVISA**
+- Continuous waveform acquisition over **TCP/IP**
+- Real-time display of:
+  - **Channel 4 peak current**
+  - **Corresponding Channel 3 voltage**
+- Automatic waveform scaling using oscilloscope preamble parameters
+- Measurement history table with:
+  - alternating row styling
+  - live count tracking
+  - right-click context menu
+- Export logged data to **CSV**
+- Clear:
+  - selected measurements
+  - full history
+- Classic Windows-style GUI with a clean engineering-focused layout
+- Connection status indicator with visual feedback
 
-Author
-------
-Indura Rathnamalala
+---
+
+## 🛠 Tech Stack
+
+- **Python**
+- **tkinter** for GUI
+- **PyVISA** for oscilloscope communication
+- **NumPy** for waveform processing
+- **CSV / datetime** for data export and logging
+
+---
+
+## How It Works
+
+1. The application connects to the oscilloscope using a VISA TCP/IP resource string.
+2. Acquisition settings are configured automatically.
+3. Waveforms are read from:
+   - **CH3**
+   - **CH4**
+4. The software:
+   - finds the peak value in **CH4**
+   - locates the same index in **CH3**
+   - displays both values in the main interface
+5. If either value changes significantly, the reading is stored in the history table.
+6. The user can export the logged data to CSV.
+
+---
+
+## 📡 Instrument Connection
+
+The program uses **PyVISA** to connect to an oscilloscope with a resource string like:
+
+```python
+TCPIP0::10.200.22.14::INSTR
